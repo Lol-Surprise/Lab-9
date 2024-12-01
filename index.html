@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гра "21"</title>
     <style>
@@ -118,32 +117,23 @@
     </style>
 </head>
 <body>
-
     <h1>Гра "21"</h1>
     <p>Введіть ваше ім'я:</p>
     <input type="text" id="playerName" placeholder="Ваше ім'я" />
     <button id="startButton">Почати гру</button>
-
     <div id="game">
         <h2>Раунд <span id="roundNumber">1</span></h2>
-        
         <div id="cardsContainer">
-            <!-- Секція для карт гравця (зліва) -->
             <div class="playerSide" id="playerCards"></div>
-            
-            <!-- Секція для карт комп'ютера (справа) -->
             <div class="computerSide" id="computerCards"></div>
         </div>
-
         <div id="playerScore">Ваші очки: 0</div>
         <div id="computerScore">Очки комп'ютера: 0</div>
         <div class="results" id="results"></div>
         <button id="nextRoundButton" style="display: none;">Наступний раунд</button>
         <button id="endGameButton" style="display: none;">Закінчити гру</button>
     </div>
-
     <script>
-        // Масив карт з їх зображеннями у форматі base64
         const cards = [
             { name: '6', value: 6, image: 'https://astrometa.ru/images/winds/karty2/6-chervei.png' },
             { name: '7', value: 7, image: 'https://astrometa.ru/images/winds/karty2/7-chervei.png' },
@@ -155,70 +145,48 @@
             { name: '4', value: 4, image: 'https://astrometa.ru/images/winds/karty2/korol-chervei.png' },
             { name: '11', value: 11, image: 'https://astrometa.ru/images/winds/karty2/tuz-chervei.png' }
         ];
-
         let playerName = "";
         let playerScore = 0;
         let computerScore = 0;
         let round = 1;
-
-        // Функція для отримання випадкової карти
         function getRandomCard() {
             const randomIndex = Math.floor(Math.random() * cards.length);
             return cards[randomIndex];
         }
-
-        // Функція для початку гри
         function startGame() {
             playerName = document.getElementById('playerName').value.trim();
             if (!playerName) {
                 alert("Будь ласка, введіть ваше ім'я.");
                 return;
             }
-
             document.getElementById('playerName').disabled = true;
             document.getElementById('startButton').disabled = true;
             document.getElementById('game').style.display = 'block';
-
             playerScore = 0;
             computerScore = 0;
             round = 1;
-
             nextRound();
         }
-
-        // Функція для початку наступного раунду
         function nextRound() {
             if (round > 3) {
                 determineWinner();
                 return;
             }
-
             document.getElementById('roundNumber').innerText = round;
             const playerCard = getRandomCard();
             const computerCard = getRandomCard();
-
             playerScore += playerCard.value;
             computerScore += computerCard.value;
-
             const playerCardsDiv = document.getElementById('playerCards');
             const computerCardsDiv = document.getElementById('computerCards');
-
-            // Оновлення карт
             playerCardsDiv.innerHTML = `Карти ${playerName}: <div class="card"><img src="${playerCard.image}" alt="${playerCard.name}" /> ${playerCard.name}</div>`;
             computerCardsDiv.innerHTML = `Карти Комп'ютера: <div class="card"><img src="${computerCard.image}" alt="${computerCard.name}" /> ${computerCard.name}</div>`;
-
-            // Оновлення рахунку
             document.getElementById('playerScore').innerText = `Ваші очки: ${playerScore}`;
             document.getElementById('computerScore').innerText = `Очки комп'ютера: ${computerScore}`;
-
             round++;
-
-            // Показати кнопку для наступного раунду
             document.getElementById('nextRoundButton').style.display = 'inline-block';
             document.getElementById('nextRoundButton').onclick = nextRound;
         }
-
-        // Функція для визначення переможця
         function determineWinner() {
             let resultText = "";
             if (playerScore > computerScore) {
@@ -233,13 +201,9 @@
             document.getElementById('nextRoundButton').style.display = 'none';
             document.getElementById('endGameButton').style.display = 'inline-block';
         }
-
-        // Завершення гри
         function endGame() {
             window.location.reload();
         }
-
-        // Додавання обробників подій
         document.getElementById('startButton').addEventListener('click', startGame);
         document.getElementById('endGameButton').addEventListener('click', endGame);
     </script>
